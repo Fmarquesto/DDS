@@ -3,6 +3,7 @@ namespace App\Model;
 
 class RealizarCompra extends RestService
 {
+    public static $uri = 'realizarCompra';
     /**
      * @var string
      */

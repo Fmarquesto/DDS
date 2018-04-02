@@ -1,18 +1,20 @@
 <?php
-
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-
 require_once __DIR__ . '/../vendor/autoload.php';
+
+$user = '14027';
+$pass = 'sisqas31';
+$baseUri = 'https://www.farmaciaesencia.com/apis/ventas/';
 
 $logLevel = Logger::DEBUG;
 $logger = new Logger('dds.log');
 $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/dds_log.log',$logLevel));
 
-//$os = (new \App\Model\ObtenerStock($logger,'user','pass'))->withNumeroCliente('13456')->withMateriales(array('45623','1235','22134','2684','9697','77558'),false);
-//$ep = (new \App\Model\ObtenerEstadoPedido($logger,'user','pass'))->withNClienteDDS('123')->withNPedido('112');
-/*
-$rC = (new \App\Model\RealizarCompra($logger,'user','pass'))
+$os = (new \App\Model\ObtenerStock($logger,$user,$pass,$baseUri))->withNumeroCliente('13456')->withMateriales(array('45623','1235','22134','2684','9697','77558'),false);
+$ep = (new \App\Model\ObtenerEstadoPedido($logger,$user,$pass,$baseUri))->withNClienteDDS('123')->withNPedido('112');
+
+$rC = (new \App\Model\RealizarCompra($logger,$user,$pass,$baseUri))
     ->setCentroSuministro('BSAS')
     ->setClienteConversor('321')
     ->setValidarCliente('X')
@@ -53,5 +55,14 @@ $rC = (new \App\Model\RealizarCompra($logger,'user','pass'))
     ->setNumeroPedido('124')
     ->setPrestador('123123')
 ;
-echo json_encode($rC);die;
-*/
+$allServices = array($ep,$os,$rC);
+/**
+ * @var \App\Model\RestService $service
+ */
+foreach($allServices as $service){
+    try{
+        $service->post($rC::$uri);
+    }catch (Exception $e){
+        echo $e->getMessage().PHP_EOL;
+    }
+}

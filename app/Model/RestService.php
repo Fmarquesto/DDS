@@ -38,6 +38,11 @@ abstract class RestService implements JsonSerializable
     private $headers;
 
     /**
+     * @var string $basicAuth
+     */
+    private $basicAuth;
+
+    /**
      * RestService constructor.
      * @param Logger $logger
      * @param string $user
@@ -51,9 +56,9 @@ abstract class RestService implements JsonSerializable
         $this->baseUri = $baseUri;
         $this->headers = array(
             'Content-Type:application/json',
-            'Authorization: Basic '. base64_encode("$user:$pass"),
             'Accept:application/json'
         );
+        $this->basicAuth = "$user:$pass";
         return $this;
     }
 
@@ -74,6 +79,9 @@ abstract class RestService implements JsonSerializable
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($this->curl,  CURLOPT_VERBOSE,  FALSE);
         curl_setopt($this->curl, CURLINFO_HEADER_OUT, true);
+        //curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($this->curl, CURLOPT_USERPWD, $this->basicAuth);
+        curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     }
 
     public function post($uri){
@@ -82,6 +90,7 @@ abstract class RestService implements JsonSerializable
         curl_setopt($this->curl,  CURLOPT_POSTFIELDS,  json_encode($this));
         $response = $this->callCurl($this->baseUri.$uri,$this->headers);
         $httpCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        $this->logCurl(json_encode($this),$response);
         return $this->processResponse($response,$httpCode);
     }
 
@@ -92,13 +101,14 @@ abstract class RestService implements JsonSerializable
 
         }
         $response = curl_exec($this->curl);
-        $this->logCurl($response);
         return $response;
     }
 
-    private function logCurl($response){
+    private function logCurl($data,$response){
         $ch = $this->curl;
         $this->logger->info("<---REQUEST--->");
+        $this->logger->info($data);
+        $this->logger->info("<---RESPONSE--->");
         $data = array(
             "URL"=>curl_getinfo($ch,CURLINFO_EFFECTIVE_URL),
             "HTTP_CODE"=>curl_getinfo($ch,CURLINFO_HTTP_CODE),
