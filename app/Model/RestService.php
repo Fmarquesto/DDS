@@ -125,7 +125,7 @@ abstract class RestService implements JsonSerializable
             $error = $this->processResponseError($response);
             throw new Exception($error,$httpCode);
         }
-        return $response;
+        return $this->handleResponse($response,$httpCode);
     }
 
     private function processResponseError($response){
@@ -135,4 +135,9 @@ abstract class RestService implements JsonSerializable
             $error = $responseError['Message'];
         return $error;
     }
+
+    /**
+     * @return mixed
+     */
+    abstract function handleResponse($response,$httpCode);
 }

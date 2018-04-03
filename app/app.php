@@ -12,12 +12,12 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$user = '14027';
+$user = '14004';
 $pass = 'sisqas31';
 $baseUri = 'https://www.farmaciaesencia.com/apis/ventas/';
 
 $logLevel = Logger::DEBUG;
-$logger = new Logger('dds.log');
+$logger = new Logger('DDS.RESTSERVICE');
 $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/dds_log.log',$logLevel));
 
 $os = (new ObtenerStock($logger,$user,$pass,$baseUri))->withNumeroCliente('13456')->withMateriales(array('45623','1235','22134','2684','9697','77558'),false);
@@ -65,12 +65,11 @@ $rC = (new RealizarCompra($logger,$user,$pass,$baseUri))
     ->setPrestador('123123')
 ;
 $allServices = array($ep,$os,$rC);
-/**
- * @var RestService $service
- */
+
 foreach($allServices as $service){
     try{
-        $service->post($rC::$uri);
+        $res = $service->post($service::$uri);
+        var_dump($res);
     }catch (Exception $e){
         echo $e->getMessage().PHP_EOL;
     }

@@ -74,4 +74,11 @@ class ObtenerEstadoPedido extends RestService
             "NumeroPedido" => $this->nPedido
         );
     }
+
+    /**
+     * @return mixed
+     */
+    public function handleResponse($response,$httpCode){
+        return $response;
+    }
 }

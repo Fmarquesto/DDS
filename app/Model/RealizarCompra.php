@@ -203,4 +203,15 @@ class RealizarCompra extends RestService
         }
         return $data;
     }
+
+    /**
+     * @return mixed
+     */
+    function handleResponse($response,$httpCode)
+    {
+        $resultado = 'OK';
+        if($httpCode != 204)
+            $resultado = 'FALLO';
+        return $resultado;
+    }
 }

@@ -74,4 +74,12 @@ class ObtenerStock extends RestService
             "Materiales"=>$this->materiales
         );
     }
+
+    /**
+     * @return mixed
+     */
+    function handleResponse($response, $httpCode)
+    {
+        return $response;
+    }
 }
