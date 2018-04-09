@@ -21,50 +21,26 @@ $logger = new Logger('DDS.RESTSERVICE');
 $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/dds_log.log',$logLevel));
 
 $os = (new ObtenerStock($logger,$user,$pass,$baseUri))->withNumeroCliente('13456')->withMateriales(array('45623','1235','22134','2684','9697','77558'),false);
-$ep = (new ObtenerEstadoPedido($logger,$user,$pass,$baseUri))->withNClienteDDS('123')->withNPedido('112');
+$ep = (new ObtenerEstadoPedido($logger,$user,$pass,$baseUri))->withNClienteDDS('14027')->withNPedido('100000046');
 
 $rC = (new RealizarCompra($logger,$user,$pass,$baseUri))
-    ->setCentroSuministro('BSAS')
-    ->setClienteConversor('321')
-    ->setValidarCliente('X')
-    ->setValidatCredito('')
-    ->setMoverProcesoAutomatico('X')
-    ->setMoverProcesoAutomaticoNC('')
     ->setItems(
         array(
             (new ItemPedido())
                 ->setCantidad('4')
                 ->setCodigoBarra('12121212121')
-                ->setCodigoMaterialDDS('0123456789')
-                ->setDescuentoTerceros('23')
-                ->setMaterialConversor('9876543210')
-                ->setNumeroAutorizacion('128937')
-                ->setPosicion(1)
-                ->setZTerm('ABCD')
-                ->setAplicarCondicionHabitual('X')
-                ->setZagrup('ASDKLJ')
-                ->setRemito((new RemitoItemPedido())->setNumeroReceta('11')->setNumeroPedido('22')->setNumeroSolicitud('33')->setNombreApellidoAfiliado('44')->setNumeroAfiliado('55'))
-                ->setCondiciones(array((new Condiciones())->setKschl('a')->setKbetr('4'),(new Condiciones())->setKschl('c')->setKbetr('5')))
-                ->setTextos(array((new Textos())->setTextID('e')->setTextLine('f'),(new Textos())->setTextID('g')->setTextLine('h')))
-                ->setReferencias(array((new Referencias())->setCodigo('aaaa'),(new Referencias())->setCodigo('bbbb'))),
+                ->setPosicion(1),
             (new ItemPedido())
                 ->setCantidad('4')
                 ->setCodigoBarra('989898989898')
-                ->setCodigoMaterialDDS('1234567890')
-                ->setDescuentoTerceros('3')
-                ->setMaterialConversor('0987654321')
-                ->setNumeroAutorizacion('14141')
                 ->setPosicion(2)
-                ->setRemito((new RemitoItemPedido())->setNumeroPedido('55')->setNombreApellidoAfiliado('66')->setNumeroAfiliado('77'))
         )
     )
-    ->setMotivo('A')
-    ->setNumeroClienteDDS('345')
-    ->setNumeroConvenio('1115151')
-    ->setNumeroPedido('124')
-    ->setPrestador('123123')
+    ->setNumeroClienteDDS('14027')
+    ->setNumeroPedido('100000046')
 ;
-$allServices = array($ep,$os,$rC);
+
+$allServices = array($os,$rC,$ep);
 
 foreach($allServices as $service){
     try{

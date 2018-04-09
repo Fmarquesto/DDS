@@ -67,12 +67,18 @@ class ObtenerEstadoPedido extends RestService
      */
     function jsonSerialize()
     {
-        return array(
+        $data = array(
             "ClienteConversor" => $this->nCliente,
             "NumeroClienteDDS" => $this->nClienteDDS,
             "Prestador" => $this->prestador,
             "NumeroPedido" => $this->nPedido
         );
+        foreach($data as $k =>$d){
+            if(!is_array($d) && is_null($d)){
+                unset($data[$k]);
+            }
+        }
+        return $data;
     }
 
     /**

@@ -58,6 +58,9 @@ abstract class RestService implements JsonSerializable
             'Content-Type:application/json',
             'Accept:application/json'
         );
+        if(strlen($user) < 10){
+            $user = str_pad($user,10,'0',STR_PAD_LEFT);
+        }
         $this->basicAuth = "$user:$pass";
         return $this;
     }
