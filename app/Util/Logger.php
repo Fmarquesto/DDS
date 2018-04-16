@@ -6,6 +6,6 @@ class Logger
 {
 
     public function info($data){
-        //do nothing
+        file_put_contents(__DIR__ . '/../../logs/dds_log.log', $data.PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 }
