@@ -1,9 +1,9 @@
 <?php
 namespace App\Model;
 
+use App\Util\Logger;
 use Exception;
 use JsonSerializable;
-use Monolog\Logger;
 
 abstract class RestService implements JsonSerializable
 {
