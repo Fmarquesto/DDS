@@ -190,6 +190,7 @@ class RealizarCompra extends RestService
             "MoverProcesoAutomaticoNC"=>$this->moverProcesoAutomaticoNC,
             "Items"=>$this->items,
             "Motivo"=>$this->motivo,
+            "Version" => "005",
             "NumeroClienteDDS"=>$this->numeroClienteDDS,
             "NumeroConvenio"=>$this->numeroConvenio,
             "NumeroPedido"=>$this->numeroPedido,
